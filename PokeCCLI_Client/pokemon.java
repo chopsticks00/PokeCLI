@@ -1,8 +1,12 @@
-package PokeCLI_Client;
+package PokeCCLI_Client;
 
 public class pokemon {
-	public int[] ev = {0, 0, 0, 0, 0 ,0}; //hp atk def spa spd spe
 	public static final int MAX_EV = 510;
+	
+	public int[] ev = {0, 0, 0, 0, 0 ,0}; //hp atk def spa spd spe
+	public int happy = 255; //0-255
+	public int nature = 0; //0-25
+	public int gender = -1; //-1 none, 0 male 1, female
 	
 	public String name = "empty";
 	

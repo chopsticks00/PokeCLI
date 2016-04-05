@@ -1,4 +1,4 @@
-package PokeCLI_Client;
+package PokeCCLI_Client;
 
 import java.util.*;
 

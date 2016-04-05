@@ -1,4 +1,4 @@
-package PokeCLI_Client;
+package PokeCCLI_Client;
 import java.util.*;
 public class pokeClient{
 	public static final ArrayList<String> COMMAND_LIST = new ArrayList<String>(Arrays.asList(
@@ -6,6 +6,7 @@ public class pokeClient{
 				"help",
 				"mkTeam"
 		}));
+	
 	public static final ArrayList<String> COMMAND_LIST_TEAM = new ArrayList<String>(Arrays.asList(
 		new String[] {
 				"help",
@@ -14,12 +15,26 @@ public class pokeClient{
 				"lsPokemon",
 				"exit"
 		}));
+	
 	public static final ArrayList<String> COMMAND_LIST_POKE = new ArrayList<String>(Arrays.asList(
 		new String[] {
 				"help",
 				"set",
-				"lsEv"
+				"show"
 		}));
+	public static final ArrayList<String> POKE_SHOW = new ArrayList<String>(Arrays.asList(
+		new String[] {
+				"ev",
+				"brief"
+	}));
+	public static final ArrayList<String> POKE_SET = new ArrayList<String>(Arrays.asList(
+			new String[]{
+			"ev",
+			"move",
+			"happiness",
+			"nature",
+			"gender"
+	}));
 	
 	private static Scanner uIn = new Scanner(System.in);
 	
@@ -170,75 +185,109 @@ public class pokeClient{
 			}
 			return 0;
 		case 1:
-			try{
-				cmd.get(1);
-			}catch(Exception e){System.out.println("Error: please specify \"ev\" or \"move\".");return 0;}
-			switch(cmd.get(1)){
-			case "ev":
-				try{cmd.get(2);}catch(Exception e){System.out.println("Error: please specify ev type\n" + 
-			"(\"hp\"/\"atk\"/\"def\"/\"spa\"/\"spd\"/\"spe\")");return 0;}
-				try{cmd.get(3);}catch(Exception e){System.out.println("Please specify ev value<0-255>");return 0;}
-				
+			try{cmd.get(1);}catch(Exception e){System.out.println("Error: please specify set argument");}
+			int setDex = POKE_SET.indexOf(cmd.get(1));
+			switch(setDex){
+			case 0:
+				try{cmd.get(2);}catch(Exception e){System.out.println("Error: please specify ev type \"hp/atk/def/spa/spd/spe\"");return 0;}
 				switch(cmd.get(2)){
 				case "hp":
 					vTeam.pokemonList[index].setHp(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				case "atk":
 					vTeam.pokemonList[index].setAtk(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				case "def":
 					vTeam.pokemonList[index].setDef(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				case "spa":
 					vTeam.pokemonList[index].setSpa(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				case "spd":
 					vTeam.pokemonList[index].setSpd(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				case "spe":
 					vTeam.pokemonList[index].setSpe(Integer.parseInt(cmd.get(3)));
-					return 0;
+					break;
 				default:
-					System.out.println("Error: please specify ev type\n" + 
-							"(\"hp\"/\"atk\"/\"def\"/\"spa\"/\"spd\"/\"spe\")");
-					return 0;
+					System.out.println("Error: please specify ev type \"hp/atk/def/spa/spd/spe\"");
+					break;
 				}
-			case "move":
-				/*this will be the location
-				 * of setting moves for each pokemon
-				 * before we do this I must format
-				 * the database of pokemon moves
-				 * so this program can read it
+				break;
+			case 1:
+				/*
+				 * This area is for setting moves
+				 * first they must be programmed in
+				 * 
 				 */
-				return 0;
-			}
-		case 2:
-			int evs = pokemon.MAX_EV;
-			for(int i = 0; i < 6; i ++){
-				switch(i){
-				case 0:
-					System.out.print("hp  - ");
-					break;
-				case 1:
-					System.out.print("atk - ");
-					break;
-				case 2:
-					System.out.print("def - ");
-					break;
-				case 3:
-					System.out.print("spa - ");
-					break;
-				case 4:
-					System.out.print("spd - ");
-					break;
-				case 5:
-					System.out.print("spe - ");
-					break;
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			default:
+				if(cmd.get(1).equals("help")){
+					for(String i : POKE_SET){
+						System.out.println("   " + i);
+					}
+				}else{
+					System.out.println("Error: invalid set argument, use \"set help\"");
 				}
-				System.out.println(vTeam.pokemonList[index].ev[i]);
-				evs -= vTeam.pokemonList[index].ev[i];
+				break;
 			}
-			System.out.println(evs + " Ev's left");
+			return 0;
+		case 2:
+			try{cmd.get(1);}catch(Exception e){System.out.println("Error: please specify a show argument.");return 0;}
+			int showDex = POKE_SHOW.indexOf(cmd.get(1));
+			switch(showDex){
+			case 0:
+				int evs = pokemon.MAX_EV;
+				for(int i = 0; i < 6; i ++){
+					switch(i){
+					case 0:
+						System.out.print("hp  - ");
+						break;
+					case 1:
+						System.out.print("atk - ");
+						break;
+					case 2:
+						System.out.print("def - ");
+						break;
+					case 3:
+						System.out.print("spa - ");
+						break;
+					case 4:
+						System.out.print("spd - ");
+						break;
+					case 5:
+						System.out.print("spe - ");
+						break;
+					}
+					System.out.println(vTeam.pokemonList[index].ev[i]);
+					evs -= vTeam.pokemonList[index].ev[i];
+				}
+				System.out.println(evs + " Ev's left");
+				break;
+			case 1:
+				/*This will be the are where
+				 * we can show all general information
+				 * about the currently specified pokemon
+				 * eg: happiness, ev's, gender, name, etc...
+				 */
+				break;
+			default:
+				if(cmd.get(1).equals("help")){
+					for(String i : POKE_SHOW){
+						System.out.println("   " + i);
+					}
+				}else{
+					System.out.println("Error: invalid show argument, use \"show help\".");
+				}
+					break;
+			}
 			return 0;
 		default:
 			System.out.println("Error: invalid command, use \"help\".");
